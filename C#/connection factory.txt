@@ -1,0 +1,9 @@
+ class ConnectionFactory
+    {
+        public MySqlConnection GetConnection()
+        {
+            string conexao = ConfigurationManager.ConnectionStrings["bdvendas"].ConnectionString;
+            return new MySqlConnection(conexao);
+        }
+    }
+}
