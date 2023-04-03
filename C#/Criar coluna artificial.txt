@@ -1,0 +1,7 @@
+ carrinho.Columns.Add("Códico", typeof(int));
+            carrinho.Columns.Add("Produto", typeof(string));
+            carrinho.Columns.Add("Qtd", typeof(string));
+            carrinho.Columns.Add("Preço", typeof(decimal));
+            carrinho.Columns.Add("SubTotal", typeof(decimal));
+
+            DtCarrinho.DataSource = carrinho;

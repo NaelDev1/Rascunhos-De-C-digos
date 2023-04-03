@@ -1,0 +1,34 @@
+ public void FocarMascara(Form tela)
+        {
+            foreach (Control telapai in tela.Controls)
+            {
+                foreach (Control telinha in telapai.Controls)
+                {
+                    if (telinha is TabPage)
+                    {
+                        foreach (Control bebe in telinha.Controls)
+                        {
+                            if (bebe is MaskedTextBox)
+                            {
+                                (bebe as MaskedTextBox).MouseClick += new MouseEventHandler(Clicar_Click);
+
+
+                            }
+                        }
+                    }
+                }
+
+
+            }
+        }
+
+        private void Clicar_Click(object sender, MouseEventArgs e)
+        {
+            MaskedTextBox bebe = sender as MaskedTextBox;
+            Regex regex = new Regex(@"\d");
+            if (!regex.IsMatch(bebe.Text))
+            {
+                bebe.Select(0, 0);
+            }
+
+        }
