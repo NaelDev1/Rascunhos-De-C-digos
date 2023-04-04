@@ -1,0 +1,34 @@
+using Controllers.Entidades;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MySqlX.XDevAPI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Controllers.Map
+{
+    internal class ClienteMap : IEntityTypeConfiguration<Clientes>
+    {
+        public void Configure(EntityTypeBuilder<Clientes> builder)
+        {
+            builder.ToTable("Clientes");
+
+            builder.HasKey(c => c.CoCozao);
+
+            builder.Property(c => c.Bostinha)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(c => c.Email)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.Property(c => c.Telefone)
+                .IsRequired()
+                .HasMaxLength(20);
+        }
+    }
+}

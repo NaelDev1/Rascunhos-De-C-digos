@@ -1,0 +1,30 @@
+using Controllers.Entidades;
+using Controllers.Map;
+using Microsoft.EntityFrameworkCore;
+using MySqlX.XDevAPI;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Emit;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Controllers.Context
+{
+    public class SistemaContext : DbContext
+    {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=bddentista;Uid=root;");
+            
+           
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ClienteMap());
+           
+        }
+        public DbSet<Clientes> Clientes { get; set; }
+
+    }
+}
