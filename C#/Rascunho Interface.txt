@@ -16,3 +16,22 @@ namespace Controllers.Repositorios
         Task Remove(int id);
     }
 }
+
+
+
+/// jeito nao assíncrono 
+
+using Controllers.Entidades;
+using System.Collections.Generic;
+
+namespace Controllers.Repositorios
+{
+    public interface InterfaceCliente
+    {
+        IEnumerable<Clientes> GetAll();
+        Clientes GetById(int id);
+        void Add(Clientes cliente);
+        void Update(Clientes cliente);
+        void Remove(int id);
+    }
+}

@@ -48,3 +48,86 @@ namespace Controllers.Repositorios
         }
     }
 }
+
+
+
+
+
+
+
+
+///// Classe não assincrona 
+
+
+using Controllers.Context;
+using Controllers.Entidades;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Controllers.Repositorios
+{
+    public class ClienteRep : InterfaceCliente
+    {
+        private readonly SistemaContext _context;
+
+        public ClienteRep(SistemaContext context)
+        {
+            _context = context;
+        }
+
+        public IEnumerable<Clientes> GetAll()
+        {
+            return _context.Clientes.ToList();
+        }
+
+        public Clientes GetById(int id)
+        {
+            return _context.Clientes.Find(id);
+        }
+
+        public void Add(Clientes cliente)
+        {
+            _context.Clientes.Add(cliente);
+            _context.SaveChanges();
+        }
+
+        public void Update(Clientes cliente)
+        {
+            _context.Entry(cliente).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public void Remove(int id)
+        {
+            var cliente = _context.Clientes.Find(id);
+            _context.Clientes.Remove(cliente);
+            _context.SaveChanges();
+        }
+    }
+}
+
+
+///// outros metodos para consulta adicionais
+
+
+///manipular por data
+public IEnumerable<Clientes> GetAll(DateTime data)
+{
+    return _context.Clientes.Where(c => c.Data == data).ToList();
+}
+
+/// pegar dois periodos
+
+public IEnumerable<Clientes> GetAllByDate(DateTime startDate, DateTime endDate)
+{
+    return _context.Clientes
+                   .Where(c => c.DataCadastro >= startDate && c.DataCadastro <= endDate)
+                   .ToList();
+}
+
+////
+
+
+
+

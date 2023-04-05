@@ -1,0 +1,16 @@
+public class Clientes
+{
+    public int Id { get; set; }
+
+    [DisplayName("Nome")]
+    public string CoCozao { get; set; }
+
+    [DisplayName("Outro Nome")]
+    public string Bostinha { get; set; }
+
+    [DisplayName("Telefone")]
+    public string Telefone { get; set; }
+
+    [DisplayName("Email")]
+    public string Email { get; set; }
+}

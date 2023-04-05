@@ -1,0 +1,32 @@
+private async void BtnEditar_Click(object sender, EventArgs e)
+{
+    var cliente = new Clientes();
+    {
+        cliente.Id = int.Parse(TxbId.Text);
+        cliente.CoCozao = int.Parse(TxbNome.Text);
+        cliente.Bostinha = TxbOutroNome.Text;
+        cliente.Telefone = TxbTelefone.Text;
+        cliente.Email = TxbEmail.Text;
+    };
+
+    await _clienteRep.Update(cliente);
+
+    MessageBox.Show("Cliente atualizado com sucesso!");
+}
+
+///// jeito não Assícrono
+
+private void BtnInserir_Click(object sender, EventArgs e)
+{
+    var cliente = new Clientes();
+    {
+        cliente.CoCozao = int.Parse(TxbNome.Text);
+        cliente.Bostinha = TxbOutroNome.Text;
+        cliente.Telefone = TxbTelefone.Text;
+        cliente.Email = TxbEmail.Text;
+    };
+
+    _clienteRep.Add(cliente);
+
+    MessageBox.Show("Cliente adicionado com sucesso!");
+}

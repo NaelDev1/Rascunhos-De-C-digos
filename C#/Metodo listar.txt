@@ -1,0 +1,5 @@
+private void Form1_Load(object sender, EventArgs e)
+{
+    var clientes = _clienteRep.GetAll().ToList();
+    dataGridView1.DataSource = clientes;
+}
