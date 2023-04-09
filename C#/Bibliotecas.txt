@@ -8,5 +8,7 @@ WinForm.Transitions
 //nova biblioteca com ui personalizada
 MetroSet_UI
 
+Zeroit.Framework.Met
+
 //outra tbm melhor
 SaaUI.Winforms

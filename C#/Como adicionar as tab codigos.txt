@@ -1,0 +1,102 @@
+ private void formularioBaseUCToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Verificar se a guia já está aberta
+            bool guiaJaAberta = false;
+            foreach (TabPage tabPage in TabFom.TabPages)
+            {
+                if (tabPage.Name == "Formulario Base" || tabPage.Name == "Tela 2UC")
+                {
+                    guiaJaAberta = true;
+                    TabFom.SelectedTab = tabPage;
+                    break;
+                }
+            }
+
+            // Se a guia já estiver aberta, selecione-a e retorne
+            if (guiaJaAberta)
+            {
+                return;
+            }
+
+            FormularioBaseUC u = new FormularioBaseUC(TabFom, tbClientes);
+            tbClientes.ImageIndex = 0;
+
+            tbClientes.Name = "Formulario Base";
+            tbClientes.Text = "Formulario Base";
+
+            TabFom.Appearance = TabAppearance.Buttons;
+            TabFom.TabPages.Add(tbClientes);
+
+            Button fechar = new Button();
+            fechar.Text = "X";
+            fechar.Font = new Font("Segoi UI", 12);
+            int padding = (fechar.Font.Height - fechar.Height) / 2;
+            fechar.Padding = new Padding(padding, 0, padding, 0);
+            fechar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            fechar.BackColor = Color.Transparent;
+            fechar.FlatAppearance.BorderSize = 0;
+            fechar.FlatStyle = FlatStyle.Flat;
+            fechar.ForeColor = Color.MediumSeaGreen;
+            fechar.Width = fechar.PreferredSize.Width + padding * 2;
+            fechar.Height = fechar.PreferredSize.Height;
+            fechar.Location = new Point(tbClientes.Width - fechar.Width - 5, 5);
+            fechar.Click += (s, ev) => TabFom.TabPages.Remove(tbClientes);
+
+            Button formulario2 = new Button();
+            formulario2.Text = "Novo Botao";
+            formulario2.Font = new Font("Segoi UI", 12);
+            int padding2 = (formulario2.Font.Height - formulario2.Height) / 2;
+            formulario2.Padding = new Padding(padding2, 0, padding2, 0);
+            formulario2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            formulario2.BackColor = Color.Transparent;
+            formulario2.FlatAppearance.BorderSize = 0;
+            formulario2.FlatStyle = FlatStyle.Flat;
+            formulario2.ForeColor = Color.MediumSeaGreen;
+            formulario2.Width = formulario2.PreferredSize.Width + padding2 * 2;
+            formulario2.Height = fechar.PreferredSize.Height;
+            formulario2.Location = new Point(tbClientes.Width - formulario2.Width - 5, formulario2.Bottom + 5);
+            formulario2.Click += (s, ev) => IrParaOutraGuia(tbClientes);
+
+
+            tbClientes.Controls.Add(u);
+            tbClientes.Controls.Add(fechar);
+            tbClientes.Controls.Add(formulario2);
+
+        }
+        private void IrParaOutraGuia(TabPage tabPageAtual)
+        {
+            ///fechar essa guia
+            tabPageAtual.Controls.Clear();
+            tabPageAtual.Text = "Foi mudado";
+
+            Frm2UC novotab = new Frm2UC(TabFom, tbClientes);
+            tabPageAtual.Controls.Add(novotab);
+
+
+        }
+
+        private void formularioBaseUCToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            // Verificar se a guia já está aberta
+            bool guiaJaAberta = false;
+            foreach (TabPage tabPage in TabFom.TabPages)
+            {
+                if (tabPage.Name == "Formulario Base" || tabPage.Name == "Tela 2UC")
+                {
+                    guiaJaAberta = true;
+                    TabFom.SelectedTab = tabPage;
+                    break;
+                }
+            }
+
+            // Se a guia já estiver aberta, selecione-a e retorne
+            if (guiaJaAberta)
+            {
+                return;
+            }
+            Frm2UC telaNova = new Frm2UC(TabFom, tbClientes);
+            tbClientes.Name = "Tela 2UC";
+            tbClientes.Text = "Tela 2UC";
+            tbClientes.Controls.Add(telaNova);
+            TabFom.TabPages.Add(tbClientes);
+        }
