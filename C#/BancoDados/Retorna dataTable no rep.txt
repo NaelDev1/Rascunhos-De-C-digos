@@ -1,0 +1,28 @@
+public DataTable ListaDataGrid()
+        {
+           DataTable dt = new DataTable();
+
+
+            dt.Columns.Add("ID");
+            dt.Columns.Add("Nome");
+            dt.Columns.Add("Marca");
+            dt.Columns.Add("Categoria");
+            dt.Columns.Add("Sub Produto");
+            dt.Columns.Add("Qtd");
+
+            var produtos = Banco.Produtos.ToList<Produtos>();
+
+            foreach(var item in produtos)
+            {
+                DataRow linha = dt.NewRow();
+                linha["ID"] = item.Codigo;
+                linha["Nome"] = item.Nome;
+                linha["Marca"] = item.Marca;
+                linha["Categoria"] = item.Categoria;
+                linha["Sub Produto"] = item.SubProduto;
+                linha["Qtd"] = item.Qtd;
+                dt.Rows.Add(linha); 
+            }
+            return dt;
+
+        }

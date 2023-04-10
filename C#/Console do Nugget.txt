@@ -1,0 +1,8 @@
+///Install-Package Microsoft.EntityFrameworkCore.Tools
+
+
+
+//Add-Migration CriarTabelas
+
+
+//Update-Database
