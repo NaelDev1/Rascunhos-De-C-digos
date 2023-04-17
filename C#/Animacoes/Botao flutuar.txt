@@ -1,0 +1,59 @@
+using Guna.UI2.WinForms;
+using Guna.UI2.AnimatorNS;
+using System.Diagnostics;
+
+namespace TestesProjeto
+{
+    public partial class Form1 : Form
+    {
+        private bool _isFloating;
+        private int _originalTop;
+        private int _initialY;
+
+        public Form1()
+        {
+            InitializeComponent();
+
+            _isFloating = false;
+            _originalTop = bt_animar.Top;
+            _initialY = bt_animar.Location.Y;
+            bt_animar.MouseEnter += bt_animar_MouseEnter;
+            bt_animar.MouseLeave += bt_animar_MouseLeave;
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            guna2Transition1.Interval = 50;
+            guna2Transition1.ShowSync(bt_animar);
+            AnimarBotao();
+        }
+
+        private async void AnimarBotao()
+        {
+            _isFloating = true;
+            if (_isFloating)
+            {
+                await Task.Delay(300); // adiciona um atraso de 200 milissegundos
+                while (_isFloating)
+                {
+                    double y = Math.Sin(DateTime.Now.Ticks / 9000000.0 * Math.PI) * 5.0;
+                    bt_animar.Location = new Point(bt_animar.Location.X, _initialY + (int)y);
+                    await Task.Delay(10);
+                }
+            }
+            
+        }
+
+        private void bt_animar_MouseLeave(object sender, EventArgs e)
+        {
+            AnimarBotao();
+        }
+
+        private async void bt_animar_MouseEnter(object sender, EventArgs e)
+        {
+            _isFloating = false;
+            
+        }
+    }
+}

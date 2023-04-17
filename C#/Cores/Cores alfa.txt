@@ -1,0 +1,1 @@
+// cinza tranparente : 150;255;255;255
