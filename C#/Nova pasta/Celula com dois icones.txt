@@ -1,0 +1,197 @@
+"   public CadastroDeBairro()
+        {
+            InitializeComponent();
+            CelulaComDoisBotao coluna = new CelulaComDoisBotao();
+            Global.cadastroDeBairro = this;
+            dt_usuario.DataSource = new BairroDAO().ListaBairroData();
+            this.colunaPersonalizada = new DataGridViewButtonColumn();
+            colunaPersonalizada.CellTemplate = coluna;
+            colunaPersonalizada.HeaderText = "Ações";
+
+            dt_usuario.Columns.Add(colunaPersonalizada);
+
+
+        }
+        public void DeletarLinha()
+        {
+        }
+        private void bt_inserir_Click(object sender, EventArgs e)
+        {
+            Bairro obj = new Bairro()
+            {
+                nome = edt_nome.Text,
+                valorEntrega = decimal.Parse(edt_valorEntrega.Text)
+            };
+            BairroDAO dao = new BairroDAO();
+            dao.AdicionarBairro(obj);
+        }
+
+        public void dt_usuario_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int id = int.Parse(dt_usuario.CurrentRow.Cells[1].Value.ToString());
+            MessageBox.Show(id.ToString());
+        }
+
+        private void dt_usuario_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0)
+            {
+                DataGridViewRow row = dt_usuario.Rows[e.RowIndex];
+                row.Selected = true;
+            }
+        }
+
+        private void dt_usuario_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dt_usuario.Rows[e.RowIndex];
+                row.Selected = false;
+            }
+
+        }
+    }"
+//////////////////////////// codigo celula personalizada////////////
+"using TesteBanco.Controllers;
+using TesteBanco.Resources;
+using static TesteBanco.CadastroDeBairro;
+
+namespace TesteBanco.Modells
+{
+    public class CelulaComDoisBotao : DataGridViewButtonCell
+    {
+      
+        public CelulaComDoisBotao()
+        {
+        }
+
+        protected override void Paint(Graphics graphics, Rectangle clipBounds, Rectangle cellBounds, int rowIndex, DataGridViewElementStates cellState, object value, object formattedValue, string errorText, DataGridViewCellStyle cellStyle, DataGridViewAdvancedBorderStyle advancedBorderStyle, DataGridViewPaintParts paintParts)
+        {
+            // Desenhe o primeiro botão
+            BotaoPersonalizado btn1 = new BotaoPersonalizado();
+            btn1.Name = "btn1";
+            btn1.Text = "";
+            btn1.Width = cellBounds.Width / 2 - 1;
+            btn1.Height = cellBounds.Height - 2;
+            btn1.Location = new Point(cellBounds.X + 1, cellBounds.Y + 1);
+            btn1.Click += new EventHandler(Btn1_Click);
+            btn1.Parent = this.DataGridView;
+            btn1.Image = Properties.Resources.excluir;
+            btn1.FlatStyle = FlatStyle.Flat;
+            btn1.FlatAppearance.BorderSize = 0;
+            btn1.FlatAppearance.MouseOverBackColor = Color.White;
+            btn1.FlatAppearance.MouseDownBackColor = Color.White;
+            btn1.BackColor = Color.White;
+            btn1.UseVisualStyleBackColor = true;
+            btn1.MouseEnter += HoverBtn1;
+            btn1.MouseLeave += SaindoBtn1;
+
+            // Desenhe o segundo botão
+            BotaoPersonalizado btn2 = new BotaoPersonalizado();
+            btn2.Text = "";
+            btn2.Width = cellBounds.Width / 2 - 1;
+            btn2.Height = cellBounds.Height - 2;
+            btn2.Location = new Point(cellBounds.X + cellBounds.Width / 2 + 1, cellBounds.Y + 1);
+            btn2.Image = Properties.Resources.editar;
+            btn2.FlatStyle = FlatStyle.Flat;
+            btn2.FlatAppearance.BorderSize = 0;
+            btn2.FlatAppearance.MouseOverBackColor = Color.White;
+            btn2.FlatAppearance.MouseDownBackColor = Color.White;
+            btn2.BackColor = Color.White;
+            btn2.UseVisualStyleBackColor = true;
+            btn2.Parent = this.DataGridView;
+            btn2.Click += Btn2_Click;
+            btn2.MouseEnter += HoverBtn2;
+            btn2.MouseLeave += SaindoBtn2;
+            
+            // Desenhe a célula vazia
+            base.Paint(graphics, clipBounds, cellBounds, rowIndex, cellState, value, formattedValue, errorText, cellStyle, advancedBorderStyle, paintParts);
+        }
+
+        private void Btn1_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Botão 1 clicado!");
+            BotaoPersonalizado btn1 = (BotaoPersonalizado)sender;         
+            btn1.FlatStyle = FlatStyle.Flat;
+            btn1.FlatAppearance.BorderSize = 0;
+            btn1.FlatAppearance.MouseOverBackColor = Color.White;
+            btn1.FlatAppearance.MouseDownBackColor = Color.White;
+            btn1.FlatAppearance.CheckedBackColor = Color.White;
+            DataGridViewCellEventArgs cellArgs = new DataGridViewCellEventArgs(0, 0);
+            ((CadastroDeBairro)Global.cadastroDeBairro).dt_usuario_CellClick(sender, cellArgs);
+
+        }
+
+        private void Btn2_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Botão 2 clicado!");
+            BotaoPersonalizado btn2 = (BotaoPersonalizado)sender;
+            btn2.FlatStyle = FlatStyle.Flat;
+            btn2.FlatAppearance.BorderSize = 0;
+            btn2.FlatAppearance.MouseOverBackColor = Color.White;
+            btn2.FlatAppearance.MouseDownBackColor = Color.White;
+            btn2.FlatAppearance.CheckedBackColor = Color.White;
+            // Código a ser executado quando o botão 1 é clicado
+            MessageBox.Show("Botão 1 clicado");
+            string nome = ((CadastroDeBairro)Global.cadastroDeBairro).dt_usuario.CurrentRow.Cells[2].Value.ToString();
+            MessageBox.Show(nome);
+        }
+
+        private void HoverBtn2(object sender, EventArgs e) 
+        {
+            BotaoPersonalizado btn2 = (BotaoPersonalizado)sender;
+            btn2.Image = Properties.Resources.editar_verde;
+            btn2.FlatAppearance.MouseOverBackColor = Color.White;
+            btn2.FlatAppearance.MouseDownBackColor = Color.White;
+            btn2.BackColor = Color.White;
+            btn2.FlatStyle = FlatStyle.Flat;
+           
+        }
+        private void SaindoBtn2(object sender, EventArgs e)
+        {
+            BotaoPersonalizado btn2 = (BotaoPersonalizado)sender;
+            btn2.Image = Properties.Resources.editar;
+            btn2.FlatAppearance.MouseOverBackColor = Color.White;
+            btn2.FlatAppearance.MouseDownBackColor = Color.White;
+        }
+        private void HoverBtn1(object sender, EventArgs e)
+        {
+            BotaoPersonalizado btn1 = (BotaoPersonalizado)sender;
+            btn1.Image = Properties.Resources.excluir_vermelho;
+            btn1.FlatAppearance.MouseOverBackColor = Color.White;
+            btn1.FlatAppearance.MouseDownBackColor = Color.White;
+            btn1.BackColor = Color.White;
+            btn1.FlatStyle = FlatStyle.Flat;
+        }
+        private void SaindoBtn1(object sender, EventArgs e)
+        {
+            BotaoPersonalizado btn1 = (BotaoPersonalizado)sender;
+            btn1.Image = Properties.Resources.excluir;
+            btn1.FlatAppearance.MouseOverBackColor = Color.White;
+            btn1.FlatAppearance.MouseDownBackColor = Color.White;
+        }
+
+        
+
+    }
+}
+"
+
+
+///////////// global //////////////
+
+"using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace TesteBanco
+{
+    public static class Global
+    {
+        public static Form cadastroDeBairro;
+    }
+}
+"
+

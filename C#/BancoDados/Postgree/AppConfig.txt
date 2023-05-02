@@ -1,0 +1,4 @@
+<ConnectionStrings>
+    <add name="dbuser" conectionString="Host=localhost; Port=5432; Database=arrayteste; User Id=postgres; Password=root;"
+         providerName="Npgsql"></add>
+  </ConnectionStrings>
