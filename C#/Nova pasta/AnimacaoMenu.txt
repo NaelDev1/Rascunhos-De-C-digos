@@ -1,0 +1,176 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Transitions;
+
+namespace TesteMenuAnimacao
+{
+   
+    public partial class Form1 : Form
+    {
+        private int menuHeight = 0;
+        private const int animationDuration = 100;
+        private const int delayBeforeClosing = 500;
+        private const int buttonWidthIncrease = 20;
+        private const int buttonHeightIncrease = 10;
+        private Timer closeTimer;
+        private int originalWidth;
+        private int originalHeight;
+        private int originalLeft;
+        private int originalTop;
+        private bool fechado = false;
+        public Form1()
+        {
+            InitializeComponent();
+            InitializeCloseTimer();
+            menuHeight = painelAbrir.Height;
+
+        }
+
+        private void InitializeCloseTimer()
+        {
+            closeTimer = new Timer();
+            closeTimer.Interval = delayBeforeClosing;
+            closeTimer.Tick += CloseTimer_Tick;
+        }
+
+        private void bt_abrir_MouseHover(object sender, EventArgs e)
+        {
+            Transition.run(painelAbrir, "Height", menuHeight, new TransitionType_Acceleration(animationDuration));
+            closeTimer.Stop(); // Reinicia o timer se ele estiver em execução
+        }
+
+        private void bt_abrir_MouseLeave(object sender, EventArgs e)
+        {
+            if (!painelAbrir.ClientRectangle.Contains(painelAbrir.PointToClient(MousePosition)))
+            {
+                closeTimer.Start(); // Inicia o timer se o mouse não estiver sobre o painel
+            }
+        }
+
+        private void painelAbrir_MouseEnter(object sender, EventArgs e)
+        {
+            NaoPodeFechar();
+        }
+        private void NaoPodeFechar()
+        {
+            closeTimer.Stop(); // Para o timer se o mouse entrar no painel
+        }
+        private void PodeFechar()
+        {
+            closeTimer.Start(); // Inicia o timer se o mouse sair do painel
+        }
+        private void painelAbrir_MouseLeave(object sender, EventArgs e)
+        {
+            PodeFechar();
+        }
+
+
+        private void CloseTimer_Tick(object sender, EventArgs e)
+        {
+            Transition.run(painelAbrir, "Height", 0, new TransitionType_EaseInEaseOut(animationDuration));
+            closeTimer.Stop();
+        }
+
+        private void button1_MouseEnter(object sender, EventArgs e)
+        {
+            
+            NaoPodeFechar();
+        }
+
+        private void button1_MouseLeave(object sender, EventArgs e)
+        {
+            
+            PodeFechar();
+        }
+
+        private async void button6_MouseEnter(object sender, EventArgs e)
+        {
+            if(fechado == false && button6.Width == 90 && button6.Height == 50)
+            {
+                originalWidth = button6.Width;
+                originalHeight = button6.Height;
+                originalLeft = button6.Left;
+                originalTop = button6.Top;
+
+                int newWidth = originalWidth + buttonWidthIncrease;
+                int newHeight = originalHeight + buttonHeightIncrease;
+
+                int deltaX = buttonWidthIncrease / 2;
+                int deltaY = buttonHeightIncrease / 2;
+                button6.Width = newWidth;
+                button6.Height = newHeight;
+                button6.Left = originalLeft - deltaX;
+                button6.Top = originalTop - deltaY;
+
+
+                if (button6.ClientRectangle.Contains(button6.PointToClient(Control.MousePosition)) )
+                {
+                    Transition.run(button6, "Width", originalWidth, newWidth, new TransitionType_EaseInEaseOut(animationDuration));
+                    Transition.run(button6, "Height", originalHeight, newHeight, new TransitionType_EaseInEaseOut(animationDuration));
+                    Transition.run(button6, "Left", originalLeft, originalLeft - deltaX, new TransitionType_EaseInEaseOut(animationDuration));
+                    Transition.run(button6, "Top", originalTop, originalTop - deltaY, new TransitionType_EaseInEaseOut(animationDuration));
+                    fechado = true;
+                }
+               
+            }
+          
+        }
+        private async void button6_MouseLeave(object sender, EventArgs e)
+        {
+            if (fechado)
+            {
+                int newWidth = originalWidth + buttonWidthIncrease;
+                int newHeight = originalHeight + buttonHeightIncrease;
+
+                int deltaX = buttonWidthIncrease / 2;
+                int deltaY = buttonHeightIncrease / 2;
+                button6.Width = newWidth;
+                button6.Height = newHeight;
+                button6.Left = originalLeft - deltaX;
+                button6.Top = originalTop - deltaY;
+
+
+                // Aguarda 200 milissegundos (ajuste o valor conforme necessário)
+
+                if (!button6.ClientRectangle.Contains(button6.PointToClient(Control.MousePosition)))
+                {
+                    Transition.run(button6, "Width", newWidth, originalWidth, new TransitionType_EaseInEaseOut(animationDuration));
+                    Transition.run(button6, "Height", newHeight, originalHeight, new TransitionType_EaseInEaseOut(animationDuration));
+                    Transition.run(button6, "Left", originalLeft - deltaX, originalLeft, new TransitionType_EaseInEaseOut(animationDuration));
+                    Transition.run(button6, "Top", originalTop - deltaY, originalTop, new TransitionType_EaseInEaseOut(animationDuration));
+                    fechado = false;
+                    
+                }
+                
+            }
+            
+            
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            int originalTop = button6.Top;
+            button6.Top += button6.Height; // Move o botão para baixo para começar a animação
+            button6.Visible = true;
+
+            // Animação de surgimento do botão (de baixo para cima)
+            Transition.run(button6, "Top", originalTop, new TransitionType_EaseInEaseOut(1000));
+
+            // Animação para aumentar a transparência do botão
+            //Transition.run(button6, "Opacity", 1.0, new TransitionType_EaseInEaseOut(500));
+        }
+    }
+    
+}
